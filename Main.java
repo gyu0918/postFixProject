@@ -108,10 +108,68 @@ public class Main {
         for (Character c : result) {
             System.out.print(c);
         }
+        System.out.println();
 
-        //계산하는 식!!
+        //계산하는 식!!-----------------------------------------------------------
         //우선 자리수 생각해서 넣어준다. 배열에 넣어준다.
-       // result를 생각해서 해보자
+       // result를 숫자 리스트로?
+        List<Integer> calList = new ArrayList<>();
+
+        //연산자는 - 아스키코드로변환
+        boolean numCheck = false;
+        int[] nums = new int[100];  //임의로 100자리수까지 어차피 100자리수까지 가지도 못함 인트 범위 넘어서서
+        int indexCount = 0;
+
+        for (Character c : result){
+            if (c >= 48 && c <= 57){
+               numCheck = true;
+               nums[indexCount++] = c-'0';
+            }else if (c == 'S'){
+                int sum = 0;
+                for(int i = 0; i < indexCount; i++){
+                    sum *= 10;
+                    sum += nums[i];
+                }
+                indexCount = 0;
+                nums = new int[100];
+                calList.add(sum);
+            }else if (c == '*'){
+                calList.add(-42);
+            }else if (c == '/'){
+                calList.add(-47);
+            }else if (c == '+'){
+                calList.add(-43);
+            }else if (c == '-'){
+                calList.add(-45);
+            }
+        }
+        for (Integer num : calList) {
+            System.out.print(num + " ");
+        }
+
+        Stack<Integer> stack2 = new Stack<>();
+
+        for (Integer num : calList) {
+            if (num > 0){
+               stack2.push(num);
+            }else{
+                int a2 = stack2.pop();
+                int a1 = stack2.pop();
+                if (num == -42){  //* 
+                    stack2.push( a1 * a2);
+                }else if (num == -47){
+                    stack2.push(a1 / a2);
+                }else if (num == -43){
+                    stack2.push(a1 + a2);
+                }else if (num == -45){
+                    stack2.push(a1 - a2);
+                }
+            }
+        }
+        int sumSum = stack2.pop();
+        System.out.println("sumSum = " + sumSum);
+
+
 
     }
 }
